@@ -1,0 +1,114 @@
+
+# Config mostly cribbed from http://www.unwiredcouch.com/2013/11/15/my-tmux-setup.html
+#
+# Bind Ctrl-A instead of Ctrl-B, due to screen muscle memory
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# shortcut for synchronize-panes toggle
+# # START:sync
+bind C-s set-window-option synchronize-panes
+# # END:sync
+
+
+# force a reload of the config file
+unbind r
+bind r source-file ~/.tmux.conf \; display "Reloaded"
+
+# colors
+set -g default-terminal "screen-256color"
+#set -g default-terminal "screen-16color"
+
+# unicode
+setw -g utf8 on
+set -g status-utf8 on
+
+# listen to alerts from all windows
+set -g bell-action any
+
+# and to activity
+setw -g monitor-activity on
+set -g visual-activity on
+
+# vim movement bindings
+set-window-option -g mode-keys vi
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# Mouse mode
+set -g mode-mouse on
+set -g mouse-resize-pane on
+set -g mouse-select-pane on
+set -g mouse-select-window on
+#set mouse-utf8 off
+
+# toggle mouse mode to allow mouse copy/paste
+# set mouse on with prefix m
+bind m \
+    set -g mode-mouse on \;\
+    set -g mouse-resize-pane on \;\
+    set -g mouse-select-pane on \;\
+    set -g mouse-select-window on \;\
+    display 'Mouse: ON'
+# set mouse off with prefix M
+bind M \
+    set -g mode-mouse off \;\
+    set -g mouse-resize-pane off \;\
+    set -g mouse-select-pane off \;\
+    set -g mouse-select-window off \;\
+    display 'Mouse: OFF'
+
+# quick pane cycling
+unbind ^A
+bind ^A select-pane -t :.+
+
+# scrollback buffer n lines
+set -g history-limit 100000
+
+
+# ----------------------
+#     # Status Bar
+# -----------------------
+set-option -g status on                # turn the status bar on
+set -g status-utf8 on                  # set utf-8 for the status bar
+set -g status-interval 5               # set update frequencey (default 15 seconds)
+set -g status-justify right           # center window list for clarity
+set-option -g status-position top    # position the status bar at top of screen
+
+# visual notification of activity in other windows
+setw -g monitor-activity on
+set -g visual-activity on
+
+setw -g automatic-rename on
+
+
+# set color for status bar
+set-option -g status-bg colour235 #base02
+set-option -g status-fg yellow #yellow
+set-option -g status-attr default 
+
+# set window list colors - red for active and cyan for inactive
+set-window-option -g window-status-fg white #base0
+set-window-option -g window-status-bg colour236 
+set-window-option -g window-status-attr default
+
+set-window-option -g window-status-current-fg red #orange
+set-window-option -g window-status-current-bg colour236 
+set-window-option -g window-status-current-attr bright
+
+# show host name and IP address on left side of status bar
+#set -g status-left-length 70
+#set -g status-left "#[fg=green]: #h : #[fg=brightblue]#(curl icanhazip.com) #[fg=yellow]#(ifconfig en0 | grep 'inet ' | awk '{print \"en0 \" $2}') #(ifconfig en1 | grep 'inet ' | awk '{print \"en1 \" $2}') #[fg=red]#(ifconfig tun0 | grep 'inet ' | awk '{print \"vpn \" $2}') "
+
+set -g status-left-length 70
+set -g status-left "#[fg=green]: #W[#I] :: #T[#P]"
+
+# show session name, window & pane number, date and time on right side of
+# status bar
+#set -g status-right-length 60
+#set -g status-right "%d %b %Y : %l:%M %p"
+set -g status-right ""
+
